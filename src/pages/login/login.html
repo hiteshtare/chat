@@ -1,0 +1,19 @@
+<ion-content class="background">
+  <ion-card>
+    <ion-card-header>Login</ion-card-header>
+    <ion-card-content>
+      <ion-list no-line>
+        <ion-item>
+          <ion-input type="text" name="email" placeholder="Email" [(ngModel)]="credetials.email"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input type="password" name="password" placeholder="Password" [(ngModel)]="credetials.password"></ion-input>
+        </ion-item>
+        <a (click)="passwordReset()"><b>Forgot your login details?</b></a>
+        <button ion-button block round outline color="light" (click)="login()">Log in</button>
+        <p>OR</p>
+      </ion-list>
+      <button ion-button clear color="light" (click)="signUp()"><u>Sign up for an account</u></button>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
