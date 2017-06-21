@@ -21,6 +21,11 @@ import { TabsPage } from "../pages/tabs/tabs";
 import { TabsPageModule } from "../pages/tabs/tabs.module";
 import { SignupPageModule } from "../pages/signup/signup.module";
 import { LoginPageModule } from "../pages/login/login.module";
+import { ImghandlerProvider } from '../providers/imghandler/imghandler';
+
+import { File } from '@ionic-native/file';
+import { FileChooser } from '@ionic-native/file-chooser';
+import { FilePath } from '@ionic-native/file-path';
 
 @NgModule({
   declarations: [
@@ -53,7 +58,11 @@ import { LoginPageModule } from "../pages/login/login.module";
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     AngularFireAuth,
     AuthProvider,
-    UserProvider
+    UserProvider,
+    ImghandlerProvider,
+    File,
+    FileChooser,
+    FilePath
   ]
 })
 export class AppModule { }

@@ -4,18 +4,20 @@
       Sign Up
     </ion-card-header>
     <ion-card-content>
+      <form (ngSubmit)="signUp()" #signUpForm="ngForm">
       <ion-list>
         <ion-item>
-          <ion-input type="email" name="email" placeholder="Email" [(ngModel)]="signUpUser.email"></ion-input>
+          <ion-input type="email" name="email" placeholder="Email" [(ngModel)]="signUpUser.email" required></ion-input>
         </ion-item>
         <ion-item>
-          <ion-input type="password" name="password" placeholder="Password" [(ngModel)]="signUpUser.password"></ion-input>
+          <ion-input type="password" name="password" placeholder="Password" [(ngModel)]="signUpUser.password" required></ion-input>
         </ion-item>
         <ion-item>
-          <ion-input type="text" name="displayName" placeholder="Display Name" [(ngModel)]="signUpUser.displayName"></ion-input>
+          <ion-input type="text" name="displayName" placeholder="Display Name" [(ngModel)]="signUpUser.displayName" required></ion-input>
         </ion-item>
-        <button ion-button block round outline color="light" (click)="signUp()">Sign Up</button>
+        <button ion-button block round outline color="light" type="submit" [disabled]="!signUpForm.form.valid">Sign Up</button>
       </ion-list>
+      </form>
       <button ion-button clear color="light" (click)="goBack()"><u>Go Back</u></button>
     </ion-card-content>
   </ion-card>

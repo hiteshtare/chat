@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { UserCred } from "./usercred";
 import { AuthProvider } from "../../providers/auth/auth";
 
@@ -12,7 +12,7 @@ export class LoginPage {
 
   credetials = {} as UserCred;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public authProvider: AuthProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public authProvider: AuthProvider, public alertCtrl: AlertController) {
   }
 
   ionViewDidLoad() {
@@ -20,17 +20,29 @@ export class LoginPage {
   }
 
   public login() {
-    this.authProvider.login(this.credetials).then((resp: any) => {
-      if (!resp.code) {
-        this.navCtrl.setRoot('TabsPage');
-      }
-      else {
-        alert(resp);
-      }
+    let alert = this.alertCtrl.create({
+      buttons: ['Ok']
     });
+
+    //if (this.credetials.email != '' || this.credetials.password != '') {
+      this.authProvider.login(this.credetials).then((resp: any) => {
+        if (!resp.code) {
+          this.navCtrl.setRoot('TabsPage');
+        }
+        else {
+          alert.setMessage(resp);
+          alert.present();
+        }
+      }).catch((err) => {
+        alert.setTitle('Login Failed!');
+        alert.setMessage('Invalid user credentials.');
+        alert.present();
+      });
+    //}
   }
 
   public passwordReset() {
+    this.navCtrl.push('PasswordresetPage');
   }
 
   public signUp() {
