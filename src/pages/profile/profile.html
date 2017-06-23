@@ -8,5 +8,16 @@
 
 
 <ion-content padding>
-
+  <div class="profile-image">
+    <img src="{{avatar}}" alt="Avatar" (click)="editProfilePic()">
+  </div>
+  <div>
+    <a (click)="editDisplayName()" style="cursor:pointer"><b>{{displayName}}</b></a>
+  </div>
+  <div>
+    Tap on the Display Name to Edit
+  </div>
+  <div>
+    <button ion-button round outline (click)="logout()" color="danger">Logout</button>
+  </div>
 </ion-content>

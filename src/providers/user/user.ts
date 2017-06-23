@@ -75,4 +75,51 @@ export class UserProvider {
     return promise;
   }
 
+  getUserDetails() {
+    var promise = new Promise((resolve, reject) => {
+      this.firedata.child(this.aFireAuth.auth.currentUser.uid).once('value', (snapshot) => {
+        resolve(snapshot.val());
+      }).catch((err) => {
+        reject(err);
+      });
+    });
+    return promise;
+  }
+
+  updateUserDetails(displayName: string) {
+    var promise = new Promise((resolve, reject) => {
+      this.aFireAuth.auth.currentUser.updateProfile({
+        displayName: displayName,
+        photoURL: this.aFireAuth.auth.currentUser.photoURL
+      }).then(() => {
+        this.firedata.child(this.aFireAuth.auth.currentUser.uid).set({
+          uid: this.aFireAuth.auth.currentUser.uid,
+          displayName: displayName,
+          photoURL: this.aFireAuth.auth.currentUser.photoURL
+        }).then(() => {
+          resolve({ success: true });
+        }).catch((err) => {
+          reject(err);
+        }).catch((err) => {
+          reject(err);
+        }).catch((err) => {
+          reject(err);
+        });
+      });
+    });
+    return promise;
+  }
+
+  signOutUser() {
+    var promise = new Promise((resolve, reject) => {
+      this.aFireAuth.auth.signOut().then(() => {
+        resolve({ success: true });
+      }).catch((err) => {
+        reject(err);
+      });
+    });
+    return promise;
+  }
+
+
 }
