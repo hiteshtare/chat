@@ -121,5 +121,26 @@ export class UserProvider {
     return promise;
   }
 
+  getAllUsers() {
+    var promise = new Promise((resolve, reject) => {
+
+      this.firedata.orderByChild('uid').once('value', (snapshot) => {
+        let userdata = snapshot.val();
+
+        delete userdata[firebase.auth().currentUser.uid]; //delete existing user from the list
+
+        let arrtemp = [];
+
+        for (var key in userdata) {
+          arrtemp.push(userdata[key]);
+        }
+
+        resolve(arrtemp);
+      }).catch((err) => {
+        reject(err);
+      });
+    });
+    return promise;
+  }
 
 }
