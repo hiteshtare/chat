@@ -15,5 +15,31 @@
 
 <ion-content padding>
 
+  <ion-list>
+
+    <ion-item-sliding *ngFor="let request of myRequest">
+
+      <ion-item>
+
+        <ion-avatar item-left>
+          <img src="{{request.photoURL}}" alt="{{request.displayName}}">
+        </ion-avatar>
+        <h2> {{request.displayName}}</h2>
+      </ion-item>
+
+
+      <ion-item-options>
+        <button ion-button color="secondary" (click)="acceptRequest(request)">
+        <ion-icon name="happy"></ion-icon>Accept
+    </button>
+
+        <button ion-button color="danger" (click)="rejectRequest(request)">
+        <ion-icon name="sad"></ion-icon>Reject
+    </button>
+
+      </ion-item-options>
+    </ion-item-sliding>
+
+  </ion-list>
 
 </ion-content>

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
-import { UserCred } from "./usercred";
 import { AuthProvider } from "../../providers/auth/auth";
+import { UserCred } from "../../models/usercred.model";
 
 @IonicPage()
 @Component({

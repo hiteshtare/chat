@@ -26,6 +26,7 @@ import { ImghandlerProvider } from '../providers/imghandler/imghandler';
 import { File } from '@ionic-native/file';
 import { FileChooser } from '@ionic-native/file-chooser';
 import { FilePath } from '@ionic-native/file-path';
+import { RequestProvider } from '../providers/request/request';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import { FilePath } from '@ionic-native/file-path';
     ImghandlerProvider,
     File,
     FileChooser,
-    FilePath
+    FilePath,
+    RequestProvider
   ]
 })
 export class AppModule { }

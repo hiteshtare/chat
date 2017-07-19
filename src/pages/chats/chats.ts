@@ -1,3 +1,5 @@
+import { Events } from 'ionic-angular';
+import { RequestProvider } from './../../providers/request/request';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
@@ -13,15 +15,33 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'chats.html',
 })
 export class ChatsPage {
+  myRequest = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public requestProvider: RequestProvider,
+    public events: Events) {
   }
 
-  ionViewDidLoad() {
-    //console.log('ionViewDidLoad ChatsPage');
+  ionViewWillEnter() {
+    this.requestProvider.getMyRequest();
+    this.events.subscribe('gotRequests', () => {
+      this.myRequest = [];
+      this.myRequest = this.requestProvider.userDetails;
+    });
+  }
+
+  ionViewWillLeave(){
+    this.events.unsubscribe('gotRequests');
   }
 
   addBuddy() {
     this.navCtrl.push('BuddiesPage');
+  }
+
+  acceptRequest(request) {
+    console.log("acceptRequest :-)");
+  }
+
+  rejectRequest(request) {
+    console.log("rejectRequest :-(");
   }
 }

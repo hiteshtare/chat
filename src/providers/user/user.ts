@@ -7,9 +7,15 @@ export class UserProvider {
   firedata = firebase.database().ref('/chatusers');
 
   constructor(public aFireAuth: AngularFireAuth) {
-    //console.log('Hello UserProvider Provider');
   }
 
+  /*
+    Desc - For creating new user using email and password on Firebase platform using AngularFireAuth 
+             service.
+    Called from - user.ts
+    Inputs - newUser object containing email, password & displayName.
+    Outputs - Promise.
+  */
   createNewUser(newUser) {
     var promise = new Promise((resolve, reject) => {
       this.aFireAuth.auth.createUserWithEmailAndPassword(newUser.email, newUser.password).then(() => {
@@ -37,6 +43,12 @@ export class UserProvider {
     return promise;
   }
 
+  /*
+    Desc - For sending password reset email using AngularFireAuth service.
+    Called from - passwordreset.ts
+    Inputs - email string.
+    Outputs - Promise.
+  */
   resetPassword(email) {
     var promise = new Promise((resolve, reject) => {
       this.aFireAuth.auth.sendPasswordResetEmail(email).then(() => {
@@ -49,6 +61,12 @@ export class UserProvider {
     return promise;
   }
 
+  /*
+    Desc - For updating image url under 'chatusers' for the current user using AngularFireAuth service.
+    Called from - profilepic.ts
+    Inputs - imageUrl string.
+    Outputs - Promise.
+  */
   updateImage(imageUrl) {
     var promise = new Promise((resolve, reject) => {
 
@@ -75,6 +93,12 @@ export class UserProvider {
     return promise;
   }
 
+
+  /*
+    Desc - For getting current user details using AngularFireAuth service.
+    Called from - profile.ts
+    Outputs - Promise.
+  */
   getUserDetails() {
     var promise = new Promise((resolve, reject) => {
       this.firedata.child(this.aFireAuth.auth.currentUser.uid).once('value', (snapshot) => {
@@ -86,6 +110,12 @@ export class UserProvider {
     return promise;
   }
 
+  /*
+    Desc - For updating displayName for the current user using AngularFireAuth service.
+    Called from - profile.ts
+    Inputs - displayName string.
+    Outputs - Promise.
+  */
   updateUserDetails(displayName: string) {
     var promise = new Promise((resolve, reject) => {
       this.aFireAuth.auth.currentUser.updateProfile({
@@ -110,6 +140,12 @@ export class UserProvider {
     return promise;
   }
 
+
+  /*
+        Desc - For logging out the current user using AngularFireAuth service.
+        Called from - profile.ts
+        Outputs - Promise.
+      */
   signOutUser() {
     var promise = new Promise((resolve, reject) => {
       this.aFireAuth.auth.signOut().then(() => {
@@ -121,13 +157,19 @@ export class UserProvider {
     return promise;
   }
 
+  /*
+        Desc - For getting list of users under 'chatusers' path using AngularFireAuth service.
+               Removing the current user from the list.
+        Called from - buddies.ts & request.ts
+        Outputs - Promise.
+      */
   getAllUsers() {
     var promise = new Promise((resolve, reject) => {
 
       this.firedata.orderByChild('uid').once('value', (snapshot) => {
         let userdata = snapshot.val();
 
-        delete userdata[firebase.auth().currentUser.uid]; //delete existing user from the list
+        delete userdata[firebase.auth().currentUser.uid]; //delete current user from the list.
 
         let arrtemp = [];
 

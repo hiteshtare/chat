@@ -13,9 +13,14 @@ export class ImghandlerProvider {
   imgsource: any;
 
   constructor(public fileChooser: FileChooser) {
-    //console.log('Hello ImghandlerProvider Provider');
   }
 
+  /*
+    Desc - For uploading Image on Firebase platform using File, FileChooser & FilePath native-plugin.
+           Image is stored under 'profileimages' path with the name equal to the uid of the current user.
+    Called from - profile.ts 
+    Outputs - Promise.
+  */
   uploadImage() {
     var promise = new Promise((resolve, reject) => {
 

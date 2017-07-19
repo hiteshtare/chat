@@ -1,6 +1,9 @@
+import { RequestProvider } from './../../providers/request/request';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavParams, AlertController, NavController } from 'ionic-angular';
 import { UserProvider } from "../../providers/user/user";
+import { Recipient } from "../../models/recipient.model";
+import firebase from 'firebase';
 
 @IonicPage()
 @Component({
@@ -8,16 +11,19 @@ import { UserProvider } from "../../providers/user/user";
   templateUrl: 'buddies.html',
 })
 export class BuddiesPage {
+  newRequest = {} as Recipient;
 
-  users: any;
+  filteredUsers: any;
   tempUsers: any;
   searchString: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public userProvider: UserProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public userProvider: UserProvider
+    , public requestProvider: RequestProvider, public AlertCtrl: AlertController) {
+
     this.userProvider.getAllUsers().then((resp) => {
-      this.users = resp;
+      this.filteredUsers = resp;
       this.tempUsers = resp;
-      console.log(this.users);
+      console.log(this.filteredUsers);
     }).catch((err) => {
       console.log(err);
     });
@@ -28,7 +34,7 @@ export class BuddiesPage {
   }
 
   searchUsers(event) {
-    this.users = this.tempUsers;//reassigning the user list
+    this.filteredUsers = this.tempUsers;//reassigning the user list
 
     var q = event.target.value;
 
@@ -36,11 +42,34 @@ export class BuddiesPage {
       return;
     }
 
-    this.users = this.users.filter((v) => {
+    this.filteredUsers = this.filteredUsers.filter((v) => {
       if ((v.displayName.toLowerCase().indexOf(q.toLowerCase())) > -1)
         return true;
       else
         return false;
+    });
+  }
+
+  sendRequest(recipient) {
+    this.newRequest.recipient = recipient.uid;
+    this.newRequest.sender = firebase.auth().currentUser.uid;
+
+    let succesalert = this.AlertCtrl.create({ buttons: ['Ok'] });
+    succesalert.setTitle('Request Sent');
+    succesalert.setMessage(`Your request has been sent to ${recipient.displayName}`);
+
+    this.requestProvider.sendRequest(this.newRequest).then((resp: any) => {
+      if (resp.success == 1) {
+        succesalert.present();
+
+        let sentuser = this.filteredUsers.indexOf(recipient);
+        this.filteredUsers.splice(sentuser, 1);
+      }
+      else {
+        console.log(`resp : ${resp}`);
+      }
+    }).catch((err) => {
+      alert(err);
     });
   }
 
