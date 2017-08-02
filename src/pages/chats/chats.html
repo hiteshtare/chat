@@ -14,7 +14,9 @@
 
 
 <ion-content padding>
-
+  <ion-list-header>
+    Request
+  </ion-list-header>
   <ion-list>
 
     <ion-item-sliding *ngFor="let request of myRequest">
@@ -38,6 +40,25 @@
     </button>
 
       </ion-item-options>
+    </ion-item-sliding>
+
+  </ion-list>
+
+  <ion-list-header>
+    Friends
+  </ion-list-header>
+  <ion-list>
+
+    <ion-item-sliding *ngFor="let friends of myFriends">
+
+      <ion-item>
+
+        <ion-avatar item-left>
+          <img src="{{friends.photoURL}}" alt="{{friends.displayName}}">
+        </ion-avatar>
+        <h2> {{friends.displayName}}</h2>
+      </ion-item>
+
     </ion-item-sliding>
 
   </ion-list>

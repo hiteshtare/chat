@@ -1,4 +1,4 @@
-import { Events } from 'ionic-angular';
+import { Events, AlertController } from 'ionic-angular';
 import { RequestProvider } from './../../providers/request/request';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
@@ -16,32 +16,61 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class ChatsPage {
   myRequest = [];
+  myFriends = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public requestProvider: RequestProvider,
-    public events: Events) {
+    public events: Events, public alertCtrl: AlertController) {
   }
 
   ionViewWillEnter() {
     this.requestProvider.getMyRequest();
+    this.requestProvider.getMyFriends();
+
     this.events.subscribe('gotRequests', () => {
       this.myRequest = [];
       this.myRequest = this.requestProvider.userDetails;
     });
+
+    this.events.subscribe('friends', () => {
+      this.myFriends = [];
+      this.myFriends = this.requestProvider.myFriends;
+    });
   }
 
-  ionViewWillLeave(){
+  ionViewWillLeave() {
     this.events.unsubscribe('gotRequests');
+    this.events.unsubscribe('friends');
   }
 
   addBuddy() {
     this.navCtrl.push('BuddiesPage');
   }
 
-  acceptRequest(request) {
-    console.log("acceptRequest :-)");
+  acceptRequest(buddy) {
+    this.requestProvider.acceptRequest(buddy).then(() => {
+      let alert = this.alertCtrl.create({
+        title: 'Friend added :-)',
+        message: 'You have accepted request successfully.',
+        buttons: ['Ok'],
+      });
+
+      alert.present();
+    }).catch((err) => {
+      console.log(err);
+    });
   }
 
-  rejectRequest(request) {
-    console.log("rejectRequest :-(");
+  rejectRequest(buddy) {
+    this.requestProvider.deleteRequest(buddy).then(() => {
+      let alert = this.alertCtrl.create({
+        title: 'Request Reject :-(',
+        message: 'You have rejected request successfully.',
+        buttons: ['Ok'],
+      });
+
+      alert.present();
+    }).catch((err) => {
+      console.log(err);
+    });
   }
 }
