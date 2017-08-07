@@ -1,3 +1,4 @@
+import { ChatProvider } from './../../providers/chat/chat';
 import { Events, AlertController } from 'ionic-angular';
 import { RequestProvider } from './../../providers/request/request';
 import { Component } from '@angular/core';
@@ -19,7 +20,7 @@ export class ChatsPage {
   myFriends = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public requestProvider: RequestProvider,
-    public events: Events, public alertCtrl: AlertController) {
+    public events: Events, public alertCtrl: AlertController, public chatProvider: ChatProvider) {
   }
 
   ionViewWillEnter() {
@@ -72,5 +73,10 @@ export class ChatsPage {
     }).catch((err) => {
       console.log(err);
     });
+  }
+
+  beginChat(buddy) {
+    this.chatProvider.inintializeBuddyChat(buddy);
+    this.navCtrl.push('BuddychatPage');
   }
 }

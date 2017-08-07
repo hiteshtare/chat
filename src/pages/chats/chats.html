@@ -49,16 +49,15 @@
   </ion-list-header>
   <ion-list>
 
-    <ion-item-sliding *ngFor="let friends of myFriends">
+    <ion-item-sliding *ngFor="let friend of myFriends">
 
-      <ion-item>
+      <ion-item (click)='beginChat(friend)'>
 
         <ion-avatar item-left>
-          <img src="{{friends.photoURL}}" alt="{{friends.displayName}}">
+          <img src="{{friend.photoURL}}" alt="{{friend.displayName}}">
         </ion-avatar>
-        <h2> {{friends.displayName}}</h2>
+        <h2> {{friend.displayName}}</h2>
       </ion-item>
-
     </ion-item-sliding>
 
   </ion-list>
